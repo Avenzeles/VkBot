@@ -3,15 +3,20 @@ package com.example.VkBot.services;
 import com.example.VkBot.model.Event;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -25,7 +30,7 @@ public class MessageService {
     private static final String VK_API_ENDPOINT = "https://api.vk.com/method/";   // Адрес обращения к API
     private static final String VK_API_VERSION = "5.199"; // Используемая версия API
 
-    public String ApiCall(Event event) throws URISyntaxException {
+    public String ApiCall(@org.jetbrains.annotations.NotNull Event event) throws URISyntaxException, IOException {
         if (!event.getSecret().equals(VK_API_SECRET_KEY)) {
             return "error";
         }
@@ -35,15 +40,37 @@ public class MessageService {
         }
 
         if (event.getType().equals("message_new")) {
-            List<NameValuePair> Response = new ArrayList<>();
-            Response.add(new BasicNameValuePair("message", "Вы написали: " + event.getObject().getBody()));
-            Response.add(new BasicNameValuePair("peer_id", String.valueOf(event.getObject().getUserId())));
-            Response.add(new BasicNameValuePair("access_token", VK_API_ACCESS_TOKEN));
-            Response.add(new BasicNameValuePair("v", VK_API_VERSION));
-            Response.add(new BasicNameValuePair("random_id", String.valueOf(new SecureRandom().nextInt())));
 
-            HttpGet httpGet = new HttpGet(VK_API_ENDPOINT + "messange.send");
-            httpGet.setURI(new URIBuilder(httpGet.getURI()).addParameters(Response).build());
+            System.out.println(event.getType() + " " + event.getGroupId() + " " + event.getSecret());
+
+            System.out.println("Мне написали " + event.getObject().getMessage().getText());
+
+            Map<String, String> requestParams = new HashMap<>();
+            requestParams.put("message", "Вы написали: " + event.getObject().getMessage().getText());
+            requestParams.put("peer_id", String.valueOf(event.getObject().getMessage().getPeerId()));
+            requestParams.put("access_token", VK_API_ACCESS_TOKEN);
+            requestParams.put("v", VK_API_VERSION);
+            requestParams.put("random_id", "0");
+
+            StringBuilder getParams = new StringBuilder();
+            for (Map.Entry<String, String> entry : requestParams.entrySet()) {
+                if (getParams.length() != 0) {
+                    getParams.append("&");
+                }
+                getParams.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8));
+                getParams.append("=");
+                getParams.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8));
+            }
+
+            String urlString = "https://api.vk.com/method/messages.send?" + getParams.toString();
+
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+
+            System.out.println(responseCode);
+
         }
 
         return "ok";
