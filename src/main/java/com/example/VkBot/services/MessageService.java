@@ -18,8 +18,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MessageService {
     private final String CALLBACK_API_CONFIRMATION_TOKEN = "your confirmation token";  // Строка, которую должен вернуть сервер
-    private final String VK_API_ACCESS_TOKEN = "your access token";  // Секретный ключ
-    private final String VK_API_SECRET_KEY = "your secret key";   // Ключ доступа сообщества
+    private final String VK_API_ACCESS_TOKEN = "your access token";  // Ключ доступа сообщества
+    private final String VK_API_SECRET_KEY = "your secret key";   // Секретный ключ
     private final String VK_API_VERSION = "5.199"; // Используемая версия API
 
     public String ApiCall(@org.jetbrains.annotations.NotNull Event event) throws URISyntaxException, IOException {
