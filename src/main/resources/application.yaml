@@ -1,10 +1,3 @@
 spring:
   application:
     name: VkBot
-
-token:
-  confirmation: ba08915b
-  access: vk1.a.p0_Nel1xHPILedmUXNBlZBMQuB5aKG0tX2wvs554cUYflViOFzJzPFn5L8Goit0Ur-DA8mgBDxvSu8GYZDVQTLSwdLKhCKKH7UUe2qQ_LtL6q5KcqQyqkNdswNwlhhXlYpk-waCiyzPrZ6snDnULYnMi-sJIiuKg0s3RKEt1NRpK9LRcz4bigcKPd29XA7pyk3QVw8wE4XxFzCQg8mjIVw
-
-secret:
-  key: aaQ13axAPQEcczQa

@@ -10,15 +10,18 @@ import lombok.Setter;
 @Setter
 @Data
 public class Event {
+    @JsonProperty("group_id")
+    private Long groupId;
+
     @JsonProperty("type")
     private String type;
+
+    @JsonProperty("event_id")
+    private String eventId;
 
     @JsonValue
     @JsonProperty("object")
     private EventObject object;
-
-    @JsonProperty("group_id")
-    private Long groupId;
 
     @JsonProperty("secret")
     private String secret;

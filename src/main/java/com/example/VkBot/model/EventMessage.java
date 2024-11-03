@@ -7,23 +7,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EventMessage {
-    @JsonProperty("id")
-    private int id;
-
     @JsonProperty("date")
     private int date;
 
+    @JsonProperty("from_id")
+    private int fromId;
+
+    @JsonProperty("id")
+    private int id;
+
+    @JsonProperty("version")
+    private int version;
+
     @JsonProperty("out")
     private int out;
-
-    @JsonProperty("from_id")
-    private int peerId;
-
-    @JsonProperty("read_state")
-    private int readState;
-
-    @JsonProperty("title")
-    private String title;
 
     @JsonProperty("text")
     private String text;
